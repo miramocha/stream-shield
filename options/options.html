@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Stream Shield settings</title>
+    <link rel="stylesheet" href="options.css" />
+  </head>
+  <body>
+    <main>
+      <h1>Stream Shield</h1>
+      <p class="lead">
+        Terms you list here are replaced on web pages while protection is on.
+        They stay in this browser only.
+      </p>
+      <form id="settings">
+        <label class="toggle">
+          <input id="enabled" type="checkbox" />
+          Protection enabled
+        </label>
+        <label class="field" for="terms">Hidden terms</label>
+        <textarea
+          id="terms"
+          rows="12"
+          spellcheck="false"
+          autocomplete="off"
+          placeholder="Jane Doe&#10;jane.doe@email.com"
+        ></textarea>
+        <p class="note">
+          One term per line. Matches ignore case and are not whole words, so a
+          short term can hide unrelated text. When terms overlap, the longer one
+          wins. Blank lines and repeated terms are removed on save. A few hundred
+          specific terms is plenty. Turning protection off does not put the
+          original text back; reload the page.
+        </p>
+        <label class="field" for="replacement">Replacement</label>
+        <input
+          id="replacement"
+          type="text"
+          autocomplete="off"
+          spellcheck="false"
+        />
+        <p id="replacement-warning" class="warning" hidden>
+          That replacement contains one of your terms, so matching text is left
+          as-is. Otherwise the page would keep rewriting it. Change the
+          replacement or the term, then save again.
+        </p>
+        <div class="actions">
+          <button type="submit">Save</button>
+          <span id="saved" role="status" hidden>Saved</span>
+        </div>
+      </form>
+    </main>
+    <script src="../shared/settings.js"></script>
+    <script src="options.js"></script>
+  </body>
+</html>

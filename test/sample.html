@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Stream Shield sample</title>
+    <style>
+      body {
+        margin: 32px;
+        font: 16px/1.5 system-ui, sans-serif;
+      }
+      code,
+      pre {
+        font-family: ui-monospace, Consolas, monospace;
+      }
+      .badge {
+        display: inline-block;
+        padding: 4px 8px;
+        border-radius: 999px;
+        background: #e2e8f0;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Stream Shield sample</h1>
+    <p>
+      Add the terms <strong>Jane Doe</strong> and <strong>jane.doe@email.com</strong>,
+      then reload this page.
+    </p>
+    <ul>
+      <li>The sentences below should hide that name and email.</li>
+      <li>The badge tooltip (title) should hide them too.</li>
+      <li>The text field should keep them while you edit it.</li>
+      <li>The editable box should keep them while you edit it.</li>
+      <li>The preformatted line should stay visible.</li>
+      <li>A new line appears after a short wait and should be hidden.</li>
+    </ul>
+    <p>Hello, my name is Jane Doe.</p>
+    <p>Contact jane.doe@email.com for details.</p>
+    <p>
+      <span class="badge" title="Profile: Jane Doe &lt;jane.doe@email.com&gt;">Badge with a tooltip</span>
+    </p>
+    <p>
+      <img alt="Photo of Jane Doe" src="missing-photo.png" width="64" height="64" />
+    </p>
+    <p>
+      <label>
+        This value should stay visible:
+        <input type="text" value="Jane Doe jane.doe@email.com" />
+      </label>
+    </p>
+    <p>
+      <label>
+        Placeholder should be masked; typing should not:
+        <input type="text" placeholder="Jane Doe" />
+      </label>
+    </p>
+    <p
+      contenteditable="true"
+      style="min-height: 2.5em; padding: 8px; border: 1px solid #94a3b8"
+    >
+      Editable: Jane Doe jane.doe@email.com
+    </p>
+    <pre><code>Leave this visible: Jane Doe jane.doe@email.com</code></pre>
+    <div id="live">Waiting for a live update…</div>
+    <script>
+      setTimeout(() => {
+        const line = document.createElement("p");
+        line.textContent = "Live update: Jane Doe — jane.doe@email.com";
+        document.getElementById("live").appendChild(line);
+      }, 1500);
+    </script>
+  </body>
+</html>

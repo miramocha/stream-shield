@@ -1,0 +1,126 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font: 16px/1.45 system-ui, "Segoe UI", sans-serif;
+  color: #0f172a;
+  background: #f8fafc;
+}
+
+main {
+  max-width: 40rem;
+  margin: 0 auto;
+  padding: 28px 20px 48px;
+}
+
+h1 {
+  margin: 0 0 8px;
+  font-size: 1.6rem;
+}
+
+.lead,
+.note {
+  margin: 0 0 16px;
+  color: #334155;
+}
+
+.note {
+  font-size: 0.92rem;
+}
+
+.toggle {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin: 0 0 18px;
+  font-weight: 600;
+}
+
+.field {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 600;
+}
+
+textarea,
+input[type="text"] {
+  width: 100%;
+  margin-bottom: 12px;
+  padding: 8px 10px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  background: #fff;
+  color: inherit;
+  font: 14px/1.4 ui-monospace, "Cascadia Code", Consolas, monospace;
+}
+
+textarea {
+  min-height: 220px;
+  resize: vertical;
+}
+
+.actions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+button {
+  padding: 8px 16px;
+  border: 0;
+  border-radius: 8px;
+  background: #0284c7;
+  color: #fff;
+  font: inherit;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #0369a1;
+}
+
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid #0369a1;
+  outline-offset: 2px;
+}
+
+#saved {
+  color: #047857;
+  font-weight: 600;
+}
+
+.warning {
+  margin: -4px 0 12px;
+  color: #b45309;
+  font-size: 0.92rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  body {
+    color: #e2e8f0;
+    background: #0f172a;
+  }
+
+  .lead,
+  .note {
+    color: #cbd5e1;
+  }
+
+  textarea,
+  input[type="text"] {
+    border-color: #334155;
+    background: #111827;
+  }
+
+  #saved {
+    color: #6ee7b7;
+  }
+
+  .warning {
+    color: #fdba74;
+  }
+}
