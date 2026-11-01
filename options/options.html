@@ -18,13 +18,23 @@
           <input id="enabled" type="checkbox" />
           Protection enabled
         </label>
-        <label class="field" for="terms">Hidden terms</label>
+        <div class="field-head">
+          <label class="field" for="terms">Hidden terms</label>
+          <label class="reveal">
+            <input id="show-terms" type="checkbox" />
+            Show
+          </label>
+        </div>
+        <p id="terms-concealed" class="note">
+          Terms are hidden. Turn on Show to view or edit them.
+        </p>
         <textarea
           id="terms"
           rows="12"
           spellcheck="false"
           autocomplete="off"
           placeholder="Jane Doe&#10;jane.doe@email.com"
+          hidden
         ></textarea>
         <p class="note">
           One term per line. Matches ignore case and are not whole words, so a

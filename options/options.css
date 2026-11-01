@@ -38,9 +38,29 @@ h1 {
   font-weight: 600;
 }
 
+.field-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 6px;
+}
+
 .field {
   display: block;
   margin-bottom: 6px;
+  font-weight: 600;
+}
+
+.field-head .field {
+  margin-bottom: 0;
+}
+
+.reveal {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  font-size: 0.92rem;
   font-weight: 600;
 }
 

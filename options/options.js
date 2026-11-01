@@ -3,6 +3,8 @@
 const form = document.querySelector("#settings");
 const enabledInput = document.querySelector("#enabled");
 const termsInput = document.querySelector("#terms");
+const showTermsInput = document.querySelector("#show-terms");
+const termsConcealedNote = document.querySelector("#terms-concealed");
 const replacementInput = document.querySelector("#replacement");
 const savedNode = document.querySelector("#saved");
 const warningNode = document.querySelector("#replacement-warning");
@@ -21,6 +23,12 @@ function fill(settings) {
   warningNode.hidden = !replacementContainsTerm(settings);
 }
 
+function syncTermsVisibility() {
+  const visible = showTermsInput.checked;
+  termsInput.hidden = !visible;
+  termsConcealedNote.hidden = visible;
+}
+
 function showSaved() {
   savedNode.hidden = false;
   window.clearTimeout(savedTimer);
@@ -32,6 +40,9 @@ function showSaved() {
 async function load() {
   fill(await StreamShieldSettings.getSettings());
 }
+
+showTermsInput.addEventListener("change", syncTermsVisibility);
+syncTermsVisibility();
 
 form.addEventListener("submit", async (event) => {
   event.preventDefault();
