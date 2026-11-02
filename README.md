@@ -26,7 +26,7 @@ Share the **Firefox window**, not the whole desktop. This extension only changes
 
 ## Privacy
 
-Terms and the replacement string are stored with `browser.storage.local` on this device. Nothing is uploaded. Matching is case-insensitive text replacement, not a security boundary: images, video, canvas, PDFs, and the Firefox interface can still show the same strings.
+Hidden terms and blocked image prefixes are encrypted with a PIN before they are written to `browser.storage.local`. The PIN is not stored. After you unlock, the terms stay in memory for that Firefox session only. Nothing is uploaded. Matching is case-insensitive text replacement, not a security boundary. A blocked image is shown as a black rectangle. Video, canvas, other images, PDFs, and the Firefox interface can still show the same information.
 
 ## Limits
 

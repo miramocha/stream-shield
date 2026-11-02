@@ -11,9 +11,34 @@
       <h1>Stream Shield</h1>
       <p class="lead">
         Terms you list here are replaced on web pages while protection is on.
-        They stay in this browser only.
+        They are encrypted with your PIN and stay in this browser only.
       </p>
-      <form id="settings">
+      <form id="pin-form">
+        <h2 id="pin-title">Set a PIN</h2>
+        <p id="pin-note" class="note">
+          Use 4 to 12 digits. A longer PIN is harder to guess. The PIN is not
+          saved. Terms stay locked after Firefox quits until you enter it again.
+        </p>
+        <label class="field" for="pin">PIN</label>
+        <input
+          id="pin"
+          type="password"
+          inputmode="numeric"
+          autocomplete="off"
+          maxlength="12"
+        />
+        <label class="field" id="confirm-label" for="pin-confirm">Confirm PIN</label>
+        <input
+          id="pin-confirm"
+          type="password"
+          inputmode="numeric"
+          autocomplete="off"
+          maxlength="12"
+        />
+        <p id="pin-error" class="warning" hidden></p>
+        <button id="pin-submit" type="submit">Set PIN</button>
+      </form>
+      <form id="settings" hidden>
         <label class="toggle">
           <input id="enabled" type="checkbox" />
           Protection enabled
@@ -26,8 +51,21 @@
           </label>
         </div>
         <p id="terms-concealed" class="note">
-          Terms are hidden. Turn on Show to view or edit them.
+          Terms are hidden. Show asks for your PIN before they appear.
         </p>
+        <div id="reveal-pin" class="builder" hidden>
+          <input
+            id="reveal-pin-input"
+            type="password"
+            inputmode="numeric"
+            autocomplete="off"
+            maxlength="12"
+            aria-label="PIN to show terms"
+            placeholder="PIN"
+          />
+          <button id="reveal-pin-submit" type="button">Show terms</button>
+        </div>
+        <p id="reveal-pin-error" class="warning" hidden></p>
         <textarea
           id="terms"
           rows="12"
@@ -50,6 +88,23 @@
           autocomplete="off"
           spellcheck="false"
         />
+        <h2>Blocked image addresses</h2>
+        <p class="note">
+          An image becomes a black rectangle when its address starts with a prefix
+          below. For a DoorDash map, add <code>https://api.mapbox.com</code>.
+        </p>
+        <div class="builder">
+          <input
+            id="image-source-input"
+            type="text"
+            autocomplete="off"
+            spellcheck="false"
+            placeholder="https://api.mapbox.com"
+          />
+          <button id="add-image-source" type="button">Add</button>
+        </div>
+        <p id="image-source-empty" class="note">No image addresses yet.</p>
+        <ul id="image-source-list" class="source-list"></ul>
         <p id="replacement-warning" class="warning" hidden>
           That replacement contains one of your terms, so matching text is left
           as-is. Otherwise the page would keep rewriting it. Change the
@@ -57,10 +112,36 @@
         </p>
         <div class="actions">
           <button type="submit">Save</button>
+          <button id="lock" type="button" class="secondary">Lock</button>
           <span id="saved" role="status" hidden>Saved</span>
         </div>
+        <h2>Change PIN</h2>
+        <div class="builder">
+          <input
+            id="new-pin"
+            type="password"
+            inputmode="numeric"
+            autocomplete="off"
+            maxlength="12"
+            aria-label="New PIN"
+            placeholder="New PIN"
+          />
+          <input
+            id="new-pin-confirm"
+            type="password"
+            inputmode="numeric"
+            autocomplete="off"
+            maxlength="12"
+            aria-label="Confirm new PIN"
+            placeholder="Confirm"
+          />
+          <button id="change-pin" type="button">Change PIN</button>
+        </div>
+        <p id="change-pin-error" class="warning" hidden></p>
+        <p id="pin-changed" class="note" hidden>PIN changed.</p>
       </form>
     </main>
+    <script src="../shared/vault.js"></script>
     <script src="../shared/settings.js"></script>
     <script src="options.js"></script>
   </body>

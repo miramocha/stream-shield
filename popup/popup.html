@@ -8,12 +8,29 @@
   </head>
   <body>
     <h1>Stream Shield</h1>
-    <label class="toggle">
-      <input id="enabled" type="checkbox" />
-      Protection enabled
-    </label>
-    <p id="status" class="status">Off</p>
-    <button id="options" type="button">Edit hidden terms</button>
+    <form id="unlock-form" hidden>
+      <p id="lock-message" class="status">Enter your PIN to unlock.</p>
+      <input
+        id="pin"
+        type="password"
+        inputmode="numeric"
+        autocomplete="off"
+        maxlength="12"
+        aria-label="PIN"
+      />
+      <p id="pin-error" class="error" hidden></p>
+      <button id="unlock" type="submit">Unlock</button>
+    </form>
+    <div id="controls">
+      <label class="toggle">
+        <input id="enabled" type="checkbox" />
+        Protection enabled
+      </label>
+      <p id="status" class="status">Off</p>
+      <button id="lock" type="button" class="secondary" hidden>Lock</button>
+      <button id="options" type="button">Edit hidden terms</button>
+    </div>
+    <script src="../shared/vault.js"></script>
     <script src="../shared/settings.js"></script>
     <script src="popup.js"></script>
   </body>

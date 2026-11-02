@@ -44,6 +44,33 @@ button:hover {
   background: #0369a1;
 }
 
+button.secondary {
+  margin-bottom: 8px;
+  border: 1px solid #0284c7;
+  background: transparent;
+  color: #0284c7;
+}
+
+button.secondary:hover {
+  background: #e0f2fe;
+}
+
+input[type="password"] {
+  width: 100%;
+  margin-bottom: 8px;
+  padding: 8px 10px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  background: #fff;
+  color: inherit;
+  font: inherit;
+}
+
+.error {
+  margin: 0 0 8px;
+  color: #b45309;
+}
+
 button:focus-visible,
 input:focus-visible {
   outline: 2px solid #0369a1;
@@ -58,6 +85,19 @@ input:focus-visible {
 
   .status {
     color: #cbd5e1;
+  }
+
+  input[type="password"] {
+    border-color: #334155;
+    background: #111827;
+  }
+
+  button.secondary {
+    color: #7dd3fc;
+  }
+
+  button.secondary:hover {
+    background: #082f49;
   }
 
   button {

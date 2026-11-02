@@ -81,6 +81,42 @@ textarea {
   resize: vertical;
 }
 
+h2 {
+  margin: 8px 0 6px;
+  font-size: 1.05rem;
+}
+
+.builder {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.builder input {
+  flex: 1;
+  margin-bottom: 0;
+}
+
+.source-list {
+  list-style: none;
+  margin: 0 0 16px;
+  padding: 0;
+}
+
+.source-list li {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 6px;
+  padding: 8px 10px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  background: #fff;
+  overflow-wrap: anywhere;
+}
+
 .actions {
   display: flex;
   gap: 12px;
@@ -99,6 +135,21 @@ button {
 
 button:hover {
   background: #0369a1;
+}
+
+button.secondary {
+  padding: 4px 10px;
+  border: 1px solid #0284c7;
+  background: transparent;
+  color: #0284c7;
+}
+
+button.secondary:hover {
+  background: #e0f2fe;
+}
+
+#pin-form input[type="password"] {
+  margin-bottom: 12px;
 }
 
 button:focus-visible,
@@ -131,9 +182,19 @@ textarea:focus-visible {
   }
 
   textarea,
-  input[type="text"] {
+  input[type="text"],
+  .source-list li {
     border-color: #334155;
     background: #111827;
+  }
+
+  button.secondary {
+    color: #7dd3fc;
+    border-color: #0284c7;
+  }
+
+  button.secondary:hover {
+    background: #082f49;
   }
 
   #saved {

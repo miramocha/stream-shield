@@ -6,7 +6,8 @@ const SKIP_SELECTOR = "script, style, noscript, code, pre, input, textarea";
 let settings = {
   enabled: true,
   terms: [],
-  replacement: "••••••"
+  replacement: "••••••",
+  imageSources: []
 };
 let pattern = null;
 let scanQueued = false;
@@ -77,8 +78,65 @@ function maskAttributes(element) {
   return changed;
 }
 
+function srcsetMatches(srcset) {
+  if (!srcset) return false;
+  return srcset.split(",").some((part) => {
+    const url = part.trim().split(/\s+/)[0];
+    return StreamShieldSettings.imageSourceMatches(url, settings.imageSources);
+  });
+}
+
+function escapeCssAttribute(value) {
+  return String(value).replace(/\\/g, "\\\\").replace(/"/g, '\\"');
+}
+
+function imageElementMatches(element) {
+  if (!shieldsImages()) return false;
+  const srcAttr = element.getAttribute("src") || "";
+  const srcsetAttr = element.getAttribute("srcset") || "";
+  const absolute = element.currentSrc || element.src || "";
+  return (
+    StreamShieldSettings.imageSourceMatches(absolute, settings.imageSources) ||
+    StreamShieldSettings.imageSourceMatches(srcAttr, settings.imageSources) ||
+    srcsetMatches(srcsetAttr)
+  );
+}
+
+const BLACK_IMAGE =
+  "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1' height='1'%3E%3Crect width='1' height='1' fill='%23000'/%3E%3C/svg%3E";
+
+function syncImageBlockStyle() {
+  const styleId = "stream-shield-image-blocks";
+  let style = document.getElementById(styleId);
+  if (!shieldsImages()) {
+    if (style) style.remove();
+    return;
+  }
+  if (!style) {
+    style = document.createElement("style");
+    style.id = styleId;
+    (document.head || document.documentElement).appendChild(style);
+  }
+  const rules = settings.imageSources.map((prefix) => {
+    const escaped = escapeCssAttribute(prefix);
+    return `img[src^="${escaped}" i],img[srcset*="${escaped}" i],input[type="image" i][src^="${escaped}" i]{content:url("${BLACK_IMAGE}") !important;background:#000 !important;object-fit:fill !important;color:transparent !important;}`;
+  });
+  style.textContent = rules.join("");
+}
+
+function blockMatchedImage(element) {
+  if (!imageElementMatches(element)) return;
+  const tag = element.tagName ? element.tagName.toUpperCase() : "";
+  if (tag !== "IMG" && tag !== "INPUT") return;
+  element.style.setProperty("background-color", "#000", "important");
+  element.style.setProperty("object-fit", "fill", "important");
+  element.style.setProperty("color", "transparent", "important");
+  element.style.setProperty("content", `url("${BLACK_IMAGE}")`, "important");
+}
+
 function maskRoot(root) {
-  if (!settings.enabled || !pattern || !root) return;
+  if (!settings.enabled || !root) return;
+  if (!pattern && settings.imageSources.length === 0) return;
   const start = root.nodeType === Node.ELEMENT_NODE ? root : root.parentElement;
   if (!start) return;
 
@@ -90,6 +148,13 @@ function maskRoot(root) {
     if (tag === "SCRIPT" || tag === "STYLE" || tag === "NOSCRIPT") continue;
 
     maskAttributes(node);
+    if (
+      tag === "IMG" ||
+      tag === "SOURCE" ||
+      (tag === "INPUT" && String(node.type).toLowerCase() === "image")
+    ) {
+      blockMatchedImage(node);
+    }
 
     const editable = tag === "INPUT" || tag === "TEXTAREA" || node.isContentEditable;
     const childText = allowText && !editable && tag !== "CODE" && tag !== "PRE";
@@ -106,8 +171,13 @@ function maskRoot(root) {
   }
 }
 
+function shieldsImages() {
+  return settings.enabled && settings.imageSources.length > 0;
+}
+
 function scheduleScan() {
-  if (!settings.enabled || !pattern || !document.body) return;
+  if (!document.body) return;
+  if (!settings.enabled || (!pattern && !shieldsImages())) return;
   if (scanning) {
     rescan = true;
     return;
@@ -143,26 +213,38 @@ function refreshPattern() {
 async function loadSettings() {
   settings = await StreamShieldSettings.getSettings();
   refreshPattern();
-  if (settings.enabled && pattern) scheduleScan();
+  syncImageBlockStyle();
+  if (settings.enabled && (pattern || shieldsImages())) scheduleScan();
 }
 
 function watchMutations() {
   if (!document.documentElement) return;
   const observer = new MutationObserver((mutations) => {
-    if (!settings.enabled || !pattern) return;
+    if (!settings.enabled || (!pattern && !shieldsImages())) return;
     if (!mutationMatters(mutations)) return;
     scheduleScan();
   });
   observer.observe(document.documentElement, {
     childList: true,
     subtree: true,
-    characterData: true
+    characterData: true,
+    attributes: true,
+    attributeFilter: ["src", "srcset"]
   });
 }
 
 browser.storage.onChanged.addListener((changes, area) => {
-  if (area !== "local") return;
-  if (!changes.enabled && !changes.terms && !changes.replacement) return;
+  if (area !== "local" && area !== "session") return;
+  if (
+    area === "local" &&
+    !changes.enabled &&
+    !changes.terms &&
+    !changes.replacement &&
+    !changes.imageSources &&
+    !changes.vault
+  ) {
+    return;
+  }
   loadSettings();
 });
 
